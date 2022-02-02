@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "rootDir": "src"
+  },
+  "include": "src/custom.d.ts"
+}
