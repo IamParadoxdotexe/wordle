@@ -1,3 +1,3 @@
-export default function Expenses() {
+export default function Home() {
   return <div>Hello home world?</div>;
 }

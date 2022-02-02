@@ -1,11 +1,16 @@
 import './App.scss';
 import { Outlet } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
 
 function App() {
   return (
     <div>
-      Hello world!
-      <Outlet />
+      <Sidebar />
+      <div className='outlet__container'>
+        <div className='outlet'>
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 }

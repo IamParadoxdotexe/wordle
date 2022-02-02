@@ -1,0 +1,54 @@
+$font-path: '../assets/fonts';
+
+@mixin font($font-family, $font-file, $font-weight, $font-style) {
+  @font-face {
+    font-family: $font-family;
+    src: url('#{$font-path}/#{$font-family}/#{$font-file}.ttf') format('truetype');
+    font-weight: $font-weight;
+    font-style: $font-style;
+  }
+}
+
+$font-weights: (
+  'Thin': 100,
+  'Light': 300,
+  'Regular': 400,
+  'Medium': 500,
+  'Bold': 700,
+  'Black': 900
+);
+$font-families: (
+  'Roboto': (
+    'fonts': (
+      'Light',
+      'Regular',
+      'Medium',
+      'Bold'
+    ),
+    'italics': true
+  ),
+  'Rubik': (
+    'fonts': (
+      'Light',
+      'Regular',
+      'Medium',
+      'Bold'
+    ),
+    'italics': true
+  )
+);
+
+@each $family-name, $family in $font-families {
+  $fonts: map-get($family, 'fonts');
+  $italics: map-get($family, 'italics');
+
+  @each $font in $fonts {
+    $weight: map-get($font-weights, $font);
+
+    @include font($family-name, '#{$family-name}-#{$font}', $weight, normal);
+
+    @if $italics {
+      @include font($family-name, '#{$family-name}-#{$font}Italic', $weight, italic);
+    }
+  }
+}

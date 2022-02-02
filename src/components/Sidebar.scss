@@ -1,0 +1,33 @@
+@import 'src/styles/global';
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--background-secondary);
+  width: $sidebar-width;
+  padding: $gap-xl $gap-lg;
+  height: 100%;
+
+  a:link {
+    text-decoration: none;
+  }
+
+  a {
+    button {
+      @include mix-button-basic;
+      height: 40px;
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    &.inactive button {
+      color: var(--color-primary);
+      background: none;
+
+      &:hover {
+        background: var(--background-tertiary);
+      }
+    }
+  }
+}

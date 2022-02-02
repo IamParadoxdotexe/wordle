@@ -1,1 +1,20 @@
 @import 'styles/global';
+
+.outlet__container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  --outlet-padding: #{$gap-xl};
+  --outlet-width: 1000px;
+
+  .outlet {
+    max-width: calc(var(--outlet-width) + #{$sidebar-width} + var(--outlet-padding) * 2);
+    padding-left: calc(#{$sidebar-width} + var(--outlet-padding));
+    padding-right: var(--outlet-padding);
+  }
+
+  @media (min-width: $breakpoint-xl) {
+    --outlet-padding: #{$gap-xl * 2};
+  }
+}

@@ -1,0 +1,59 @@
+@mixin mix-button {
+  position: relative;
+  overflow: hidden;
+  background: none;
+  border: none;
+  outline: 0;
+  color: var(--color-primary);
+  font-family: $font-family-secondary;
+  font-size: 100%;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  gap: $gap-sm;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none; // for links
+  height: max-content;
+  width: max-content;
+
+  &:disabled {
+    cursor: none;
+    opacity: 0.5;
+  }
+}
+
+@mixin mix-button-basic {
+  @include mix-button;
+  @include mix-focus-background(var-accent('green-secondary'));
+  background: var-accent('green-primary');
+  color: var-dark('color-primary');
+  font-weight: 500;
+  padding: $gap-sm $gap-lg;
+  border-radius: $gap-sm;
+}
+
+// focus
+@mixin mix-focus-background($color) {
+  transition-property: background;
+  transition-duration: $transition-duration;
+  transition-timing-function: $transition-timing;
+
+  &:focus,
+  &:active,
+  &:hover {
+    background: $color;
+  }
+}
+
+@mixin mix-focus-color($color) {
+  transition-property: color;
+  transition-duration: $transition-duration;
+  transition-timing-function: $transition-timing;
+
+  &:focus,
+  &:active,
+  &:hover {
+    color: $color;
+  }
+}

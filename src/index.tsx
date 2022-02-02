@@ -10,7 +10,7 @@ render(
   <BrowserRouter>
     <Routes>
       <Route path='/' element={<App />}>
-        <Route path='home' element={<Home />} />
+        <Route path='word-of-the-day' element={<Home />} />
       </Route>
     </Routes>
   </BrowserRouter>,
@@ -31,7 +31,7 @@ reportWebVitals();
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
     const newTheme = event.matches ? 'dark' : 'light';
-    document.body.className.replace(theme, newTheme);
+    document.body.className = document.body.className.replace(theme, newTheme);
     theme = newTheme;
   });
 })();

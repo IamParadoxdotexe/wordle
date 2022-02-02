@@ -27,17 +27,17 @@ $dark: (
   'color-secondary': scale-color($_light, $lightness: -25%),
   'color-tertiary': scale-color($_light, $lightness: -50%),
   'background-primary': $_dark,
-  'background-secondary': scale-color($_dark, $lightness: 5%),
-  'background-tertiary': scale-color($_dark, $lightness: 10%)
+  'background-secondary': scale-color($_dark, $lightness: 7%),
+  'background-tertiary': scale-color($_dark, $lightness: 14%)
 );
 
 $accent: (
   'green-primary': $_green,
-  'green-secondary': scale-color($_green, $lightness: 25%),
-  'green-tertiary': scale-color($_green, $lightness: 50%),
+  'green-secondary': scale-color($_green, $lightness: -25%),
+  'green-tertiary': scale-color($_green, $lightness: -50%),
   'cyan-primary': $_cyan,
-  'cyan-secondary': scale-color($_cyan, $lightness: 25%),
-  'cyan-tertiary': scale-color($_cyan, $lightness: 50%)
+  'cyan-secondary': scale-color($_cyan, $lightness: -25%),
+  'cyan-tertiary': scale-color($_cyan, $lightness: -50%)
 );
 
 // used to get dark theme values in light mode
