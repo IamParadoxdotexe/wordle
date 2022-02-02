@@ -1,0 +1,68 @@
+$font-family-primary: 'Roboto', sans-serif;
+$font-family-secondary: 'Rubik', sans-serif;
+$font-family-code: 'Roboto Condensed', sans-serif;
+
+$font-size-sm: 0.875rem; // 14px default
+$font-size-md: 1rem; // 16px default
+$font-size-lg: 1.125rem; // 18px default
+$font-size-xl: 1.25rem; // 20px default
+$font-size-xxl: 1.5rem; // 24px default
+
+$_light: #ffffff;
+$_dark: #0f0f0f;
+$_green: #45c463;
+$_cyan: #3cb9c2;
+
+$light: (
+        'color-primary': $_dark,
+        'color-secondary': scale-color($_dark, $lightness: 25%),
+        'color-tertiary': scale-color($_dark, $lightness: 50%),
+        'background-primary': $_light,
+        'background-secondary': scale-color($_light, $lightness: -5%),
+        'background-tertiary': scale-color($_light, $lightness: -10%)
+);
+
+$dark: (
+        'color-primary': $_light,
+        'color-secondary': scale-color($_light, $lightness: -25%),
+        'color-tertiary': scale-color($_light, $lightness: -50%),
+        'background-primary': $_dark,
+        'background-secondary': scale-color($_dark, $lightness: 5%),
+        'background-tertiary': scale-color($_dark, $lightness: 10%)
+);
+
+$accent: (
+        'green-primary': $_green,
+        'green-secondary': scale-color($_green, $lightness: 25%),
+        'green-tertiary': scale-color($_green, $lightness: 50%),
+        'cyan-primary': $_cyan,
+        'cyan-secondary': scale-color($_cyan, $lightness: 25%),
+        'cyan-tertiary': scale-color($_cyan, $lightness: 50%),
+);
+
+// used to get dark theme values in light mode
+@function var-dark($name) {
+  @return map-get($dark, $name);
+}
+
+// used to get light theme values in dark mode
+@function var-light($name) {
+  @return map-get($light, $name);
+}
+
+@function var-accent($name) {
+  @return map-get($accent, $name);
+}
+
+// themes
+@mixin light-theme() {
+  @each $name, $color in $light {
+    --#{$name}: #{$color};
+  }
+}
+
+@mixin dark-theme() {
+  @each $name, $color in $dark {
+    --#{$name}: #{$color};
+  }
+}
