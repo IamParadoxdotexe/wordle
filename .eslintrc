@@ -2,6 +2,7 @@
   "parserOptions": {
     "sourceType": "module"
   },
+  "extends": "eslint:recommended",
   "env": {
     "es2021": true
   }
