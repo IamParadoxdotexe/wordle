@@ -18,8 +18,8 @@ $light: (
   'color-secondary': scale-color($_dark, $lightness: 25%),
   'color-tertiary': scale-color($_dark, $lightness: 50%),
   'background-primary': $_light,
-  'background-secondary': scale-color($_light, $lightness: -5%),
-  'background-tertiary': scale-color($_light, $lightness: -10%)
+  'background-secondary': scale-color($_light, $lightness: -8%),
+  'background-tertiary': scale-color($_light, $lightness: -16%)
 );
 
 $dark: (
@@ -27,8 +27,8 @@ $dark: (
   'color-secondary': scale-color($_light, $lightness: -25%),
   'color-tertiary': scale-color($_light, $lightness: -50%),
   'background-primary': $_dark,
-  'background-secondary': scale-color($_dark, $lightness: 6%),
-  'background-tertiary': scale-color($_dark, $lightness: 18%)
+  'background-secondary': scale-color($_dark, $lightness: 8%),
+  'background-tertiary': scale-color($_dark, $lightness: 16%)
 );
 
 $accent: (

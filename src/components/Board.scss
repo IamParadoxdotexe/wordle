@@ -1,0 +1,44 @@
+@import '../styles/global';
+
+.board {
+  display: grid;
+  gap: $gap-sm;
+  grid-template-columns: repeat(5, 1fr);
+
+  $tile-size: 60px;
+
+  .board__tile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    font-weight: 500;
+    font-family: $font-family-secondary;
+    text-transform: capitalize;
+    width: $tile-size;
+    height: $tile-size;
+    border: 3px solid var(--background-tertiary);
+    border-radius: $border-radius;
+
+    &.wrong,
+    &.partial,
+    &.correct {
+      color: var-dark('color-primary');
+    }
+
+    &.wrong {
+      background: var-dark('background-tertiary');
+      border-color: var-dark('background-tertiary');
+    }
+
+    &.partial {
+      background: var-accent('cyan-primary');
+      border-color: var-accent('cyan-primary');
+    }
+
+    &.correct {
+      background: var-accent('green-primary');
+      border-color: var-accent('green-primary');
+    }
+  }
+}
