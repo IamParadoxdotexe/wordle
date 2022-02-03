@@ -4,29 +4,81 @@
   position: fixed;
   top: 0;
   left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background: var(--background-secondary);
   width: $sidebar-width;
   padding: $gap-xl $gap-lg;
   height: 100%;
 
-  a:link {
-    text-decoration: none;
-  }
+  .sidebar__links {
+    display: flex;
+    flex-direction: column;
+    gap: $gap-sm;
 
-  a {
-    button {
-      @include mix-button-basic;
-      height: 40px;
-      width: 100%;
-      justify-content: flex-start;
+    a:link {
+      text-decoration: none;
     }
 
-    &.inactive button {
-      color: var(--color-primary);
-      background: none;
+    a {
+      button {
+        @include mix-button-basic;
+        height: 40px;
+        width: 100%;
+        justify-content: flex-start;
+      }
 
-      &:hover {
-        background: var(--background-tertiary);
+      &.inactive button {
+        color: var(--color-primary);
+        background: none;
+
+        &:hover {
+          background: var(--background-tertiary);
+        }
+      }
+    }
+  }
+
+  .sidebar__toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 $gap-md;
+    font-weight: 500;
+    cursor: pointer;
+
+    $switch-height: 24px;
+    $switch-width: $switch-height * 2;
+    $knob-gap: $gap-xs;
+    $knob-size: $switch-height - $knob-gap * 2;
+
+    .toggle__switch {
+      position: relative;
+      height: $switch-height;
+      width: $switch-width;
+      background: var-dark('background-tertiary');
+      border-radius: $switch-height;
+      transition: background $transition-duration $transition-timing;
+
+      .switch__knob {
+        position: absolute;
+        top: $knob-gap;
+        left: $knob-gap;
+        background: var-dark('color-primary');
+        border-radius: $switch-height;
+        height: $knob-size;
+        width: $knob-size;
+        transition: left $transition-duration $transition-timing;
+      }
+
+      &.on {
+        background: var-accent('green-primary');
+
+        .switch__knob {
+          background: var-dark('color-primary');
+          left: $switch-width - $knob-size - $knob-gap;
+        }
       }
     }
   }

@@ -27,8 +27,8 @@ $dark: (
   'color-secondary': scale-color($_light, $lightness: -25%),
   'color-tertiary': scale-color($_light, $lightness: -50%),
   'background-primary': $_dark,
-  'background-secondary': scale-color($_dark, $lightness: 7%),
-  'background-tertiary': scale-color($_dark, $lightness: 14%)
+  'background-secondary': scale-color($_dark, $lightness: 6%),
+  'background-tertiary': scale-color($_dark, $lightness: 18%)
 );
 
 $accent: (
