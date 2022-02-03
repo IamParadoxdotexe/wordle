@@ -7,19 +7,9 @@ export default new (class ThemeService {
 
   constructor() {
     if (!this.theme) {
-      const preferLight =
-        window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-      this.theme = preferLight ? Theme.LIGHT : Theme.DARK;
-      this.cookies.set('color-theme', this.theme);
+      this.setTheme(Theme.DARK);
     }
-
-    document.body.className += this.theme;
-
-    // add listener for preference updates
-    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', event => {
-      const newTheme = event.matches ? Theme.LIGHT : Theme.DARK;
-      this.setTheme(newTheme);
-    });
+    this.replaceBodyTheme(this.theme);
   }
 
   public getTheme(): string {
@@ -27,14 +17,18 @@ export default new (class ThemeService {
   }
 
   public setTheme(newTheme: Theme): void {
-    document.body.className = document.body.className.replace(this.theme, newTheme);
     this.theme = newTheme;
+    this.replaceBodyTheme(newTheme);
     this.cookies.set('color-theme', newTheme);
   }
 
   public toggleTheme(): string {
     const newTheme = this.theme === Theme.DARK ? Theme.LIGHT : Theme.DARK;
-    this.setTheme(this.theme === Theme.DARK ? Theme.LIGHT : Theme.DARK);
+    this.setTheme(newTheme);
     return newTheme;
+  }
+
+  private replaceBodyTheme(theme: Theme) {
+    document.body.className = document.body.className.replace(/light|dark/, theme);
   }
 })();
