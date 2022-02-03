@@ -10,6 +10,7 @@
 
   .outlet {
     max-width: calc(var(--outlet-width) + #{$sidebar-width} + var(--outlet-padding) * 2);
+    padding-top: $gap-xl * 2;
     padding-left: calc(#{$sidebar-width} + var(--outlet-padding));
     padding-right: var(--outlet-padding);
   }

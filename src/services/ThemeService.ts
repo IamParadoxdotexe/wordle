@@ -19,7 +19,7 @@ export default new (class ThemeService {
   public setTheme(newTheme: Theme): void {
     this.theme = newTheme;
     this.replaceBodyTheme(newTheme);
-    this.cookies.set('color-theme', newTheme);
+    this.cookies.set('color-theme', newTheme, { maxAge: 315600000 });
   }
 
   public toggleTheme(): string {
