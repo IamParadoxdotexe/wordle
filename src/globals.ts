@@ -1,3 +1,5 @@
+import wordListFile from './wordList.txt';
+
 const alphabetArray = [
   'a',
   'b',
@@ -30,3 +32,10 @@ export const Alphabet = {};
 for (const a of alphabetArray) {
   Alphabet[a] = true;
 }
+
+export let WordList = [];
+fetch(wordListFile)
+  .then(r => r.text())
+  .then(text => {
+    WordList = text.split('\r\n');
+  });
