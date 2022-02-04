@@ -1,4 +1,6 @@
 import { LetterType, Word } from '../types';
+import binarySearch from 'binary-search';
+import { getWordList } from '../globals';
 
 export default class WordleService {
   public static evaluateGuess(guess: string, wordle: string): Word {
@@ -30,6 +32,11 @@ export default class WordleService {
     }
 
     return word;
+  }
+
+  public static async isLegalGuess(guess: string): Promise<boolean> {
+    const guessIndex = binarySearch(await getWordList(), guess, (x, y) => x.localeCompare(y));
+    return guessIndex > -1;
   }
 
   private static replaceIndex(str: string, index: number, replacement: string) {

@@ -33,9 +33,12 @@ for (const a of alphabetArray) {
   Alphabet[a] = true;
 }
 
-export let WordList = [];
-fetch(wordListFile)
-  .then(r => r.text())
-  .then(text => {
-    WordList = text.split('\r\n');
-  });
+let wordList = [];
+export const getWordList = async () => {
+  if (wordList.length === 0) {
+    const raw = await fetch(wordListFile);
+    const text = await raw.text();
+    wordList = text.split('\r\n');
+  }
+  return wordList;
+};

@@ -12,17 +12,27 @@ interface State {
 
 export default class Board extends React.Component<{}, State> {
   state = {
-    words: ['salet', 'thief', 'shoes', 'these'].map(guess =>
-      WordleService.evaluateGuess(guess, 'those')
-    ),
+    words: [],
     wordle: 'those',
     guess: ''
   };
+
   keyHandler = e => {
     if (Alphabet[e.key]) {
-      this.setState(state => ({ guess: state.guess + e.key }));
+      if (this.state.guess.length < 5) {
+        this.setState(state => ({ guess: state.guess + e.key }));
+      }
     } else if (e.key === 'Enter') {
-      this.setState(() => ({ guess: '' }));
+      if (this.state.guess.length === 5) {
+        WordleService.isLegalGuess(this.state.guess).then(legal => {
+          if (legal) {
+            this.setState(state => ({
+              guess: '',
+              words: state.words.concat([WordleService.evaluateGuess(state.guess, state.wordle)])
+            }));
+          }
+        });
+      }
     } else if (e.key === 'Backspace') {
       this.setState(state => ({ guess: state.guess.slice(0, -1) }));
     }
@@ -32,8 +42,13 @@ export default class Board extends React.Component<{}, State> {
     super(props);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     document.addEventListener('keydown', this.keyHandler, false);
+    const words = [];
+    for (const guess of ['salet', 'thief', 'shoes', 'these']) {
+      words.push(await WordleService.evaluateGuess(guess, this.state.wordle));
+    }
+    this.setState(() => ({ words }));
   }
 
   componentWillUnmount() {
