@@ -53,7 +53,11 @@ export default class Board extends React.Component<Props, State> {
           WordleService.isLegalGuess(this.state.guess).then(async legal => {
             if (legal) {
               // add new guess to board over time
-              const guessLetters = WordleService.evaluateGuess(this.state.guess, this.state.wordle);
+              this.setState(() => ({ processingGuess: true }));
+              const guessLetters = await WordleService.evaluateGuess(
+                this.state.guess,
+                this.state.wordle
+              );
               for (let i = 0; i < guessLetters.length; i++) {
                 this.setState(state => ({
                   letters: state.letters.concat([guessLetters[i]]),
