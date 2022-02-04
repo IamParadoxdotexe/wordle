@@ -1,5 +1,17 @@
 @import '../styles/global';
 
+.tile-enter {
+  transform: scale(0.1) rotateX(90deg);
+}
+
+.tile-enter-active {
+  transform: scale(1.1) rotateX(-15deg);
+}
+
+.tile-enter-done {
+  transform: scale(1) rotateX(0deg);
+}
+
 .board {
   display: grid;
   gap: $gap-sm;
@@ -19,6 +31,7 @@
     height: $tile-size;
     border: 3px solid var(--background-tertiary);
     border-radius: $border-radius;
+    transition: transform $transition-duration * 2 $transition-timing;
 
     &.wrong,
     &.partial,
