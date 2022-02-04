@@ -1,20 +1,20 @@
-import { LetterType, Word } from '../types';
+import { Letter, LetterType } from '../types';
 import binarySearch from 'binary-search';
 import { getWordList } from '../globals';
 
 export default class WordleService {
-  public static evaluateGuess(guess: string, wordle: string): Word {
-    const word: Word = { letters: [] };
+  public static evaluateGuess(guess: string, wordle: string): Letter[] {
+    const letters: Letter[] = [];
 
     // find CORRECT letters
     for (let i = 0; i < guess.length; i++) {
-      word.letters.push({
+      letters.push({
         value: guess[i],
         type: LetterType.WRONG
       });
 
       if (guess[i] === wordle[i]) {
-        word.letters[i].type = LetterType.CORRECT;
+        letters[i].type = LetterType.CORRECT;
         wordle = this.replaceIndex(wordle, i, ' ');
       }
     }
@@ -22,16 +22,16 @@ export default class WordleService {
     // find PARTIAL letters
     const wordleArray = wordle.split('');
     for (let i = 0; i < guess.length; i++) {
-      if (word.letters[i].type !== LetterType.CORRECT) {
+      if (letters[i].type !== LetterType.CORRECT) {
         const index = wordleArray.findIndex(c => c === guess[i]);
         if (index > -1) {
-          word.letters[i].type = LetterType.PARTIAL;
+          letters[i].type = LetterType.PARTIAL;
           wordleArray.splice(index, 1);
         }
       }
     }
 
-    return word;
+    return letters;
   }
 
   public static async isLegalGuess(guess: string): Promise<boolean> {

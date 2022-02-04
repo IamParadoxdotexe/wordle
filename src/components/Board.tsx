@@ -2,20 +2,32 @@ import './Board.scss';
 import React from 'react';
 import WordleService from '../services/WordleService';
 import { Alphabet } from '../globals';
-import { Word } from '../types';
+import { Letter } from '../types';
+
+interface Props {
+  guesses: string[];
+  wordle: string;
+}
 
 interface State {
-  words: Word[];
+  letters: Letter[];
   wordle: string;
   guess: string;
 }
 
-export default class Board extends React.Component<{}, State> {
-  state = {
-    words: [],
-    wordle: 'those',
-    guess: ''
-  };
+export default class Board extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    let letters = [];
+    for (const guess of props.guesses) {
+      letters = letters.concat(WordleService.evaluateGuess(guess, props.wordle));
+    }
+    this.state = {
+      letters,
+      wordle: props.wordle,
+      guess: ''
+    };
+  }
 
   keyHandler = e => {
     if (Alphabet[e.key]) {
@@ -27,8 +39,8 @@ export default class Board extends React.Component<{}, State> {
         WordleService.isLegalGuess(this.state.guess).then(legal => {
           if (legal) {
             this.setState(state => ({
-              guess: '',
-              words: state.words.concat([WordleService.evaluateGuess(state.guess, state.wordle)])
+              letters: state.letters.concat(WordleService.evaluateGuess(state.guess, state.wordle)),
+              guess: ''
             }));
           }
         });
@@ -38,17 +50,8 @@ export default class Board extends React.Component<{}, State> {
     }
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   async componentDidMount() {
     document.addEventListener('keydown', this.keyHandler, false);
-    const words = [];
-    for (const guess of ['salet', 'thief', 'shoes', 'these']) {
-      words.push(await WordleService.evaluateGuess(guess, this.state.wordle));
-    }
-    this.setState(() => ({ words }));
   }
 
   componentWillUnmount() {
@@ -58,25 +61,22 @@ export default class Board extends React.Component<{}, State> {
   render() {
     return (
       <div className='board'>
-        {[...Array(6).keys()].map((_z, i) => {
-          const word = i < this.state.words.length ? this.state.words[i] : undefined;
-          if (word) {
-            return word.letters.map((letter, i) => (
+        {[...Array(30).keys()].map(i => {
+          const letter = i < this.state.letters.length ? this.state.letters[i] : undefined;
+          if (letter) {
+            return (
               <div className={`board__tile ${letter.type}`} key={i}>
                 {letter.value}
               </div>
-            ));
-          } else if (i === this.state.words.length) {
-            return this.state.guess
-              .padEnd(5)
-              .split('')
-              .map((letter, i) => (
-                <div className='board__tile' key={i}>
-                  {letter}
-                </div>
-              ));
+            );
+          } else if (i >= this.state.letters.length && i < this.state.letters.length + 5) {
+            return (
+              <div className='board__tile' key={i}>
+                {this.state.guess.padEnd(5)[i - this.state.letters.length]}
+              </div>
+            );
           } else {
-            return [...Array(5).keys()].map((_z, i) => <div className='board__tile' key={i} />);
+            return <div className='board__tile' key={i} />;
           }
         })}
       </div>

@@ -13,7 +13,3 @@ export interface Letter {
   value: string;
   type: LetterType;
 }
-
-export interface Word {
-  letters: Letter[];
-}

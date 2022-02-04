@@ -9,7 +9,7 @@ export default new (class ThemeService {
     if (!this.theme) {
       this.setTheme(Theme.DARK);
     }
-    this.replaceBodyTheme(this.theme);
+    ThemeService.replaceBodyTheme(this.theme);
   }
 
   public getTheme(): string {
@@ -18,7 +18,7 @@ export default new (class ThemeService {
 
   public setTheme(newTheme: Theme): void {
     this.theme = newTheme;
-    this.replaceBodyTheme(newTheme);
+    ThemeService.replaceBodyTheme(newTheme);
     this.cookies.set('color-theme', newTheme, { maxAge: 315600000 });
   }
 
@@ -28,7 +28,7 @@ export default new (class ThemeService {
     return newTheme;
   }
 
-  private replaceBodyTheme(theme: Theme) {
+  private static replaceBodyTheme(theme: Theme) {
     document.body.className = document.body.className.replace(/light|dark/, theme);
   }
 })();
