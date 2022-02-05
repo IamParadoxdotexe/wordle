@@ -22,7 +22,7 @@ export default class Game extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     // get word from server
-    WordleService.getWord(props.gameType).then(() => this.setState(() => ({ loading: true })));
+    WordleService.getWord(props.gameType).then(() => this.setState(() => ({ loading: false })));
 
     // get stored guesses
     const guessesKey = `${props.gameType}#guesses`;
@@ -60,7 +60,7 @@ export default class Game extends React.Component<Props, State> {
   }
 
   render() {
-    return this.state.loading ? this.renderContent() : this.renderSkeleton();
+    return this.state.loading ? this.renderSkeleton() : this.renderContent();
   }
 
   renderContent() {
