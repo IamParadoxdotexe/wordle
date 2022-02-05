@@ -25,7 +25,7 @@ export default class WordleService {
     return await response.json();
   }
 
-  public static async isLegalGuess(guess: string): Promise<boolean> {
+  public static async isValidGuess(guess: string): Promise<boolean> {
     const guessIndex = binarySearch(await getWordList(), guess, (x, y) => x.localeCompare(y));
     return guessIndex > -1;
   }

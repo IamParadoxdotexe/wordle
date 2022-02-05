@@ -46,16 +46,17 @@ export default class Board extends React.Component<Props, State> {
           this.setState(state => ({ guess: state.guess + e.key }));
         }
       } else if (e.key === 'Enter') {
-        // check if guess is legal
+        // check if guess is valid
         if (this.state.guess.length === 5) {
-          WordleService.isLegalGuess(this.state.guess).then(async legal => {
+          this.setState(() => ({ processingGuess: true }));
+          WordleService.isValidGuess(this.state.guess).then(async legal => {
             if (legal) {
-              // add new guess to board over time
-              this.setState(() => ({ processingGuess: true }));
+              // evaluate guess against server
               const guessLetters = await WordleService.evaluateGuess(
                 this.state.guess,
                 this.props.type
               );
+              // add new confirmed guess letters to board over time
               for (let i = 0; i < guessLetters.length; i++) {
                 this.setState(state => ({
                   letters: state.letters.concat([guessLetters[i]]),
@@ -64,6 +65,17 @@ export default class Board extends React.Component<Props, State> {
                 }));
                 await Delay(300);
               }
+            } else {
+              // shake unconfirmed guess letters
+              const shakeDuration = 450;
+              const elements = Array.from(
+                document.getElementsByClassName('unconfirmed') as HTMLCollectionOf<HTMLElement>
+              );
+              elements.forEach(element => {
+                element.style.animation = `invalid-shake ${shakeDuration}ms`;
+                Delay(shakeDuration).then(() => (element.style.animation = ''));
+              });
+              Delay(shakeDuration).then(() => this.setState(() => ({ processingGuess: false })));
             }
           });
         }
@@ -86,19 +98,24 @@ export default class Board extends React.Component<Props, State> {
               exit={false}
             >
               {() => {
+                // confirmed guess letters
                 if (letter) {
                   return (
                     <div className={`board__tile ${letter.type}`} key={i}>
                       {letter.value}
                     </div>
                   );
-                } else if (i >= this.state.letters.length && i < this.state.letters.length + 5) {
+                }
+                // unconfirmed guess letters
+                else if (i >= this.state.letters.length && i < this.state.letters.length + 5) {
                   return (
-                    <div className='board__tile' key={i}>
+                    <div className='board__tile unconfirmed' key={i}>
                       {this.state.guess.padEnd(5)[i - this.state.letters.length]}
                     </div>
                   );
-                } else {
+                }
+                // empty tiles
+                else {
                   return <div className='board__tile' key={i} />;
                 }
               }}
