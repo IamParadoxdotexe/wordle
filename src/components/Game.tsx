@@ -1,16 +1,17 @@
 import './Game.scss';
 import React from 'react';
-import { GameType } from '../types';
+import { GameType, Letter } from '../types';
 import Cookies from 'universal-cookie';
 import WordleService from '../services/WordleService';
 import Board from './Board';
+import Keyboard from './Keyboard';
 
 interface Props {
   gameType: GameType;
 }
 
 interface State {
-  guesses: string[];
+  confirmedLetters: Letter[];
   loading: boolean;
 }
 
@@ -19,16 +20,20 @@ export default class Game extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
+    // get word from server
+    WordleService.getWord(props.gameType).then(() => this.setState(() => ({ loading: true })));
+
+    // get stored guesses
     const guessesKey = `${props.gameType}#guesses`;
     const guesses = this.cookies.get(guessesKey);
     if (!guesses) {
       this.cookies.set(guessesKey, []);
     }
+
     this.state = {
-      guesses: guesses ?? [],
+      confirmedLetters: guesses ?? [],
       loading: true
     };
-    WordleService.getWord(props.gameType).then(() => this.setState(() => ({ loading: true })));
   }
 
   render() {
@@ -37,8 +42,9 @@ export default class Game extends React.Component<Props, State> {
 
   renderContent() {
     return (
-      <div>
-        <Board guesses={this.state.guesses} type={this.props.gameType} />
+      <div className='game'>
+        <Board confirmedLetters={this.state.confirmedLetters} gameType={this.props.gameType} />
+        <Keyboard />
       </div>
     );
   }

@@ -5,27 +5,26 @@ import { Alphabet } from '../globals';
 import { Letter, GameType } from '../types';
 import { Delay } from '../util/Delay';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import Cookies from 'universal-cookie';
 
 interface Props {
-  guesses: string[];
-  type: GameType;
+  confirmedLetters: Letter[];
+  gameType: GameType;
 }
 
 interface State {
-  letters: Letter[];
+  confirmedLetters: Letter[];
   guess: string;
   processingGuess: boolean;
 }
 
 export default class Board extends React.Component<Props, State> {
+  cookies = new Cookies();
+
   constructor(props: Props) {
     super(props);
-    let letters = [];
-    for (const guess of props.guesses) {
-      letters = letters.concat(WordleService.evaluateGuess(guess, props.type));
-    }
     this.state = {
-      letters,
+      confirmedLetters: props.confirmedLetters,
       guess: '',
       processingGuess: false
     };
@@ -54,12 +53,17 @@ export default class Board extends React.Component<Props, State> {
               // evaluate guess against server
               const guessLetters = await WordleService.evaluateGuess(
                 this.state.guess,
-                this.props.type
+                this.props.gameType
+              );
+              // store guesses locally
+              this.cookies.set(
+                `${this.props.gameType}#guesses`,
+                this.state.confirmedLetters.concat(guessLetters)
               );
               // add new confirmed guess letters to board over time
               for (let i = 0; i < guessLetters.length; i++) {
                 this.setState(state => ({
-                  letters: state.letters.concat([guessLetters[i]]),
+                  confirmedLetters: state.confirmedLetters.concat([guessLetters[i]]),
                   guess: state.guess.slice(1),
                   processingGuess: i < guessLetters.length - 1
                 }));
@@ -89,7 +93,8 @@ export default class Board extends React.Component<Props, State> {
     return (
       <TransitionGroup className='board'>
         {[...Array(30).keys()].map(i => {
-          const letter = i < this.state.letters.length ? this.state.letters[i] : undefined;
+          const letter =
+            i < this.state.confirmedLetters.length ? this.state.confirmedLetters[i] : undefined;
           return (
             <CSSTransition
               key={letter ? `${i}-${letter}-${letter.type}` : i}
@@ -107,10 +112,13 @@ export default class Board extends React.Component<Props, State> {
                   );
                 }
                 // unconfirmed guess letters
-                else if (i >= this.state.letters.length && i < this.state.letters.length + 5) {
+                else if (
+                  i >= this.state.confirmedLetters.length &&
+                  i < this.state.confirmedLetters.length + 5
+                ) {
                   return (
                     <div className='board__tile unconfirmed' key={i}>
-                      {this.state.guess.padEnd(5)[i - this.state.letters.length]}
+                      {this.state.guess.padEnd(5)[i - this.state.confirmedLetters.length]}
                     </div>
                   );
                 }
