@@ -2,7 +2,7 @@ import './Board.scss';
 import React from 'react';
 import WordleService from '../services/WordleService';
 import { Alphabet } from '../globals';
-import { Letter, GameType, LetterType } from '../types';
+import { GameType, Letter, LetterType } from '../types';
 import { Delay } from '../util/Delay';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Cookies from 'universal-cookie';
@@ -10,7 +10,7 @@ import Cookies from 'universal-cookie';
 interface Props {
   confirmedLetters: Letter[];
   gameType: GameType;
-  guessHandler: (guessLetters: Letter[]) => void;
+  guessHandler: (confirmedLetters: Letter[], solved: boolean, filled: boolean) => void;
 }
 
 interface State {
@@ -21,9 +21,13 @@ interface State {
 
 export default class Board extends React.Component<Props, State> {
   cookies = new Cookies();
+  solved = false;
 
   constructor(props: Props) {
     super(props);
+    this.solved =
+      props.confirmedLetters.length >= 5 &&
+      props.confirmedLetters.slice(-5).every(letter => letter.type === LetterType.CORRECT);
     this.state = {
       confirmedLetters: props.confirmedLetters,
       guess: '',
@@ -40,7 +44,7 @@ export default class Board extends React.Component<Props, State> {
   }
 
   keyHandler = e => {
-    if (!this.state.processingGuess) {
+    if (!this.state.processingGuess && !this.solved) {
       if (Alphabet[e.key]) {
         if (this.state.guess.length < 5) {
           this.setState(state => ({ guess: state.guess + e.key }));
@@ -56,12 +60,6 @@ export default class Board extends React.Component<Props, State> {
                 this.state.guess,
                 this.props.gameType
               );
-              this.props.guessHandler(guessLetters);
-              // store guesses locally
-              this.cookies.set(
-                `${this.props.gameType}#guesses`,
-                this.state.confirmedLetters.concat(guessLetters)
-              );
               // add new confirmed guess letters to board over time
               for (let i = 0; i < guessLetters.length; i++) {
                 this.setState(state => ({
@@ -71,14 +69,8 @@ export default class Board extends React.Component<Props, State> {
                 }));
                 await Delay(300);
               }
-              // check if game is solved
-              const solved = guessLetters.every(letter => letter.type === LetterType.CORRECT);
-              if (solved) {
-                this.setState(() => ({
-                  confirmedLetters: [],
-                  guess: ''
-                }));
-              }
+              // check if game is solved or board is filled
+              this.checkBoardState();
             } else {
               // shake unconfirmed guess letters
               const shakeDuration = 450;
@@ -98,6 +90,30 @@ export default class Board extends React.Component<Props, State> {
       }
     }
   };
+
+  checkBoardState() {
+    const solved = this.state.confirmedLetters
+      .slice(-5)
+      .every(letter => letter.type === LetterType.CORRECT);
+    const filled = this.state.confirmedLetters.length === 30;
+    this.props.guessHandler(this.state.confirmedLetters, solved, filled);
+
+    if (solved || filled) {
+      if (this.props.gameType === GameType.WORD_RUSH) {
+        // reset board
+        this.setState(() => ({
+          confirmedLetters: [],
+          guess: ''
+        }));
+        this.cookies.set(`${this.props.gameType}#guesses`, []);
+      } else {
+        this.cookies.set(`${this.props.gameType}#guesses`, this.state.confirmedLetters);
+        this.solved = true;
+      }
+    } else {
+      this.cookies.set(`${this.props.gameType}#guesses`, this.state.confirmedLetters);
+    }
+  }
 
   render() {
     return (
