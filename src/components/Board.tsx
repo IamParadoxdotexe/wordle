@@ -2,7 +2,7 @@ import './Board.scss';
 import React from 'react';
 import WordleService from '../services/WordleService';
 import { Alphabet } from '../globals';
-import { Letter, GameType } from '../types';
+import { Letter, GameType, LetterType } from '../types';
 import { Delay } from '../util/Delay';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import Cookies from 'universal-cookie';
@@ -70,6 +70,14 @@ export default class Board extends React.Component<Props, State> {
                   processingGuess: i < guessLetters.length - 1
                 }));
                 await Delay(300);
+              }
+              // check if game is solved
+              const solved = guessLetters.every(letter => letter.type === LetterType.CORRECT);
+              if (solved) {
+                this.setState(() => ({
+                  confirmedLetters: [],
+                  guess: ''
+                }));
               }
             } else {
               // shake unconfirmed guess letters

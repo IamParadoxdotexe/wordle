@@ -54,9 +54,22 @@ export default class Game extends React.Component<Props, State> {
 
   // handler for new guess letters emitted from Board
   guessHandler(guessLetters: Letter[]) {
-    this.setState(state => ({
-      knownLetters: this.compileKnownLetters(state.confirmedLetters.concat(guessLetters))
-    }));
+    const solved = guessLetters.every(letter => letter.type === LetterType.CORRECT);
+
+    if (solved) {
+      this.setState(() => ({
+        confirmedLetters: [],
+        knownLetters: {}
+      }));
+      this.cookies.set(`${this.props.gameType}#solved`, true);
+      WordleService.getWord(this.props.gameType).then(() =>
+        this.setState(() => ({ loading: false }))
+      );
+    } else {
+      this.setState(state => ({
+        knownLetters: this.compileKnownLetters(state.confirmedLetters.concat(guessLetters))
+      }));
+    }
   }
 
   render() {
