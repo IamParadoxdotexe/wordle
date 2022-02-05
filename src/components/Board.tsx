@@ -2,18 +2,17 @@ import './Board.scss';
 import React from 'react';
 import WordleService from '../services/WordleService';
 import { Alphabet } from '../globals';
-import { Letter } from '../types';
+import { Letter, GameType } from '../types';
 import { Delay } from '../util/Delay';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 interface Props {
   guesses: string[];
-  wordle: string;
+  type: GameType;
 }
 
 interface State {
   letters: Letter[];
-  wordle: string;
   guess: string;
   processingGuess: boolean;
 }
@@ -23,11 +22,10 @@ export default class Board extends React.Component<Props, State> {
     super(props);
     let letters = [];
     for (const guess of props.guesses) {
-      letters = letters.concat(WordleService.evaluateGuess(guess, props.wordle));
+      letters = letters.concat(WordleService.evaluateGuess(guess, props.type));
     }
     this.state = {
       letters,
-      wordle: props.wordle,
       guess: '',
       processingGuess: false
     };
@@ -56,7 +54,7 @@ export default class Board extends React.Component<Props, State> {
               this.setState(() => ({ processingGuess: true }));
               const guessLetters = await WordleService.evaluateGuess(
                 this.state.guess,
-                this.state.wordle
+                this.props.type
               );
               for (let i = 0; i < guessLetters.length; i++) {
                 this.setState(state => ({
