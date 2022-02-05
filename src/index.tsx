@@ -2,7 +2,7 @@ import { render } from 'react-dom';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import WordOfTheDay from './routes/word-of-the-day';
 import WordRush from './routes/word-rush';
 
@@ -10,8 +10,10 @@ render(
   <BrowserRouter>
     <Routes>
       <Route path='/' element={<App />}>
+        <Route index element={<Navigate to='word-of-the-day' replace />} />
         <Route path='word-of-the-day' element={<WordOfTheDay />} />
         <Route path='word-rush' element={<WordRush />} />
+        <Route path='*' element={<Navigate to='word-of-the-day' replace />} />
       </Route>
     </Routes>
   </BrowserRouter>,
