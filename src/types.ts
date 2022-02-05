@@ -15,5 +15,6 @@ export interface Letter {
 }
 
 export enum GameType {
-  WORD_OF_THE_DAY = 'word-of-the-day'
+  WORD_OF_THE_DAY = 'word-of-the-day',
+  WORD_RUSH = 'word-rush'
 }
