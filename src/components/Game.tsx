@@ -32,7 +32,16 @@ export default class Game extends React.Component<Props, State> {
     }
     const confirmedLetters = (guesses ?? []) as Letter[];
 
-    // compile known letters
+    this.state = {
+      confirmedLetters,
+      knownLetters: this.compileKnownLetters(confirmedLetters),
+      loading: true
+    };
+    this.guessHandler = this.guessHandler.bind(this);
+  }
+
+  // compile known letter types for Keyboard based on confirmedLetters
+  compileKnownLetters(confirmedLetters: Letter[]): { [key: string]: LetterType } {
     const knownLetters = {};
     for (const letter of confirmedLetters) {
       const currentLetterType = knownLetters[letter.value] ?? 'z';
@@ -40,12 +49,14 @@ export default class Game extends React.Component<Props, State> {
         knownLetters[letter.value] = letter.type;
       }
     }
+    return knownLetters;
+  }
 
-    this.state = {
-      confirmedLetters,
-      knownLetters,
-      loading: true
-    };
+  // handler for new guess letters emitted from Board
+  guessHandler(guessLetters: Letter[]) {
+    this.setState(state => ({
+      knownLetters: this.compileKnownLetters(state.confirmedLetters.concat(guessLetters))
+    }));
   }
 
   render() {
@@ -55,7 +66,11 @@ export default class Game extends React.Component<Props, State> {
   renderContent() {
     return (
       <div className='game'>
-        <Board confirmedLetters={this.state.confirmedLetters} gameType={this.props.gameType} />
+        <Board
+          confirmedLetters={this.state.confirmedLetters}
+          gameType={this.props.gameType}
+          guessHandler={this.guessHandler}
+        />
         <Keyboard knownLetters={this.state.knownLetters} />
       </div>
     );

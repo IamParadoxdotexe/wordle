@@ -10,6 +10,7 @@ import Cookies from 'universal-cookie';
 interface Props {
   confirmedLetters: Letter[];
   gameType: GameType;
+  guessHandler: (guessLetters: Letter[]) => void;
 }
 
 interface State {
@@ -55,6 +56,7 @@ export default class Board extends React.Component<Props, State> {
                 this.state.guess,
                 this.props.gameType
               );
+              this.props.guessHandler(guessLetters);
               // store guesses locally
               this.cookies.set(
                 `${this.props.gameType}#guesses`,
