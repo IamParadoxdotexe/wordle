@@ -1,6 +1,6 @@
 import './Game.scss';
 import React from 'react';
-import { GameType, Letter } from '../types';
+import { GameType, Letter, LetterType } from '../types';
 import Cookies from 'universal-cookie';
 import WordleService from '../services/WordleService';
 import Board from './Board';
@@ -12,6 +12,7 @@ interface Props {
 
 interface State {
   confirmedLetters: Letter[];
+  knownLetters: { [key: string]: LetterType };
   loading: boolean;
 }
 
@@ -29,9 +30,20 @@ export default class Game extends React.Component<Props, State> {
     if (!guesses) {
       this.cookies.set(guessesKey, []);
     }
+    const confirmedLetters = (guesses ?? []) as Letter[];
+
+    // compile known letters
+    const knownLetters = {};
+    for (const letter of confirmedLetters) {
+      const currentLetterType = knownLetters[letter.value] ?? 'z';
+      if (letter.type.localeCompare(currentLetterType) < 0) {
+        knownLetters[letter.value] = letter.type;
+      }
+    }
 
     this.state = {
-      confirmedLetters: guesses ?? [],
+      confirmedLetters,
+      knownLetters,
       loading: true
     };
   }
@@ -44,7 +56,7 @@ export default class Game extends React.Component<Props, State> {
     return (
       <div className='game'>
         <Board confirmedLetters={this.state.confirmedLetters} gameType={this.props.gameType} />
-        <Keyboard />
+        <Keyboard knownLetters={this.state.knownLetters} />
       </div>
     );
   }
