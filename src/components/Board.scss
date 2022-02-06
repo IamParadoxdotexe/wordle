@@ -1,21 +1,22 @@
 @import '../styles/global';
 
 .tile-enter {
-  transform: scale(0.1) rotateX(90deg);
+  @include mix-pop-enter;
 }
 
 .tile-enter-active {
-  transform: scale(1.1) rotateX(-15deg);
+  @include mix-pop-enter-active;
 }
 
 .tile-enter-done {
-  transform: scale(1) rotateX(0deg);
+  @include mix-pop-enter-done;
 }
 
 .board {
   display: grid;
   gap: $gap-sm;
   grid-template-columns: repeat(5, 1fr);
+  width: fit-content;
 
   $tile-size: 60px;
 
@@ -53,32 +54,5 @@
       background: var(--green-primary);
       border-color: var(--green-primary);
     }
-  }
-}
-
-@keyframes invalid-shake {
-  0% {
-    transform: translateX(0);
-  }
-  10% {
-    transform: translate(-5px);
-  }
-  20% {
-    transform: translate(-15px);
-  }
-  40% {
-    transform: translate(15px);
-  }
-  60% {
-    transform: translate(-15px);
-  }
-  80% {
-    transform: translate(15px);
-  }
-  90% {
-    transform: translate(-5px);
-  }
-  100% {
-    transform: translateX(0);
   }
 }

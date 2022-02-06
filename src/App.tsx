@@ -4,7 +4,7 @@ import Sidebar from './components/Sidebar';
 
 function App() {
   return (
-    <div>
+    <div id='App'>
       <Sidebar />
       <div className='outlet__container'>
         <div className='outlet'>

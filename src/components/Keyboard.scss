@@ -1,0 +1,52 @@
+@import '../styles/global';
+
+.key-enter {
+  @include mix-pop-enter;
+}
+
+.key-enter-active {
+  @include mix-pop-enter-active;
+}
+
+.key-enter-done {
+  @include mix-pop-enter-done;
+}
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  .keyboard__row {
+    display: flex;
+    gap: 5px;
+
+    .row__key {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: $font-size-sm;
+      text-transform: capitalize;
+      height: 40px;
+      width: 32px;
+      color: var-dark('color-primary');
+      background: var-dark('color-tertiary');
+      border-radius: $border-radius * 0.5;
+      transition: transform $transition-duration * 2 $transition-timing;
+
+      &.wrong {
+        background: var-dark('background-tertiary');
+      }
+
+      &.partial {
+        background: var(--cyan-primary);
+      }
+
+      &.correct {
+        background: var(--green-primary);
+      }
+    }
+  }
+}
