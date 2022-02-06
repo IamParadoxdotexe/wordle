@@ -64,11 +64,18 @@ export default class Board extends React.Component<Props, State> {
 
   keyHandler = e => {
     if (!this.state.processingGuess && !this.props.solved) {
-      if (Alphabet[e.key]) {
+      // backspace or undo
+      if (e.key === 'Backspace' || (e.ctrlKey && e.key === 'z')) {
+        this.setState(state => ({ guess: state.guess.slice(0, -1) }));
+      }
+      // add letter
+      else if (Alphabet[e.key] && !e.ctrlKey) {
         if (this.state.guess.length < 5) {
           this.setState(state => ({ guess: state.guess + e.key }));
         }
-      } else if (e.key === 'Enter') {
+      }
+      // submit guess
+      else if (e.key === 'Enter') {
         // check if guess is valid
         if (this.state.guess.length === 5) {
           this.setState(() => ({ processingGuess: true }));
@@ -80,8 +87,6 @@ export default class Board extends React.Component<Props, State> {
             }
           });
         }
-      } else if (e.key === 'Backspace') {
-        this.setState(state => ({ guess: state.guess.slice(0, -1) }));
       }
     }
   };
