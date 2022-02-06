@@ -45,13 +45,13 @@
     }
 
     &.partial {
-      background: var-accent('cyan-primary');
-      border-color: var-accent('cyan-primary');
+      background: var(--cyan-primary);
+      border-color: var(--cyan-primary);
     }
 
     &.correct {
-      background: var-accent('green-primary');
-      border-color: var-accent('green-primary');
+      background: var(--green-primary);
+      border-color: var(--green-primary);
     }
   }
 }

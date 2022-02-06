@@ -22,8 +22,8 @@
 
 @mixin mix-button-basic {
   @include mix-button;
-  @include mix-focus-background(var-accent('green-secondary'));
-  background: var-accent('green-primary');
+  @include mix-focus-background(var(--green-secondary));
+  background: var(--green-primary);
   color: var-dark('color-primary');
   font-weight: 500;
   padding: $gap-sm $gap-lg;

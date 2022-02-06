@@ -50,19 +50,23 @@ $accent: (
   @return map-get($light, $name);
 }
 
-@function var-accent($name) {
-  @return map-get($accent, $name);
-}
-
 // themes
 @mixin light-theme() {
   @each $name, $color in $light {
+    --#{$name}: #{$color};
+  }
+
+  @each $name, $color in $accent {
     --#{$name}: #{$color};
   }
 }
 
 @mixin dark-theme() {
   @each $name, $color in $dark {
+    --#{$name}: #{$color};
+  }
+
+  @each $name, $color in $accent {
     --#{$name}: #{$color};
   }
 }

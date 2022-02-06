@@ -19,6 +19,7 @@
 
     a:link {
       text-decoration: none;
+      outline: none;
     }
 
     a {
@@ -34,6 +35,16 @@
         background: none;
 
         &:hover {
+          background: var(--background-tertiary);
+        }
+      }
+
+      &:focus {
+        &.active button {
+          background: var(--green-secondary);
+        }
+
+        &.inactive button {
           background: var(--background-tertiary);
         }
       }
@@ -73,7 +84,7 @@
       }
 
       &.on {
-        background: var-accent('green-primary');
+        background: var(--green-primary);
 
         .switch__knob {
           background: var-dark('color-primary');

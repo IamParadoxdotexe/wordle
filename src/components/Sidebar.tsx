@@ -34,7 +34,7 @@ export default function Sidebar() {
             className={({ isActive }) => (isActive ? 'active' : 'inactive')}
             to={link.route}
           >
-            <button type='button'>
+            <button type='button' tabIndex={-1}>
               {createElement(link.icon)} {link.label}
             </button>
           </NavLink>
