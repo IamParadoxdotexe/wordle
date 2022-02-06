@@ -72,6 +72,10 @@
       border-radius: $switch-height;
       transition: background $transition-duration $transition-timing;
 
+      &:focus {
+        background: var-dark('color-tertiary');
+      }
+
       .switch__knob {
         position: absolute;
         top: $knob-gap;
@@ -85,6 +89,10 @@
 
       &.on {
         background: var(--green-primary);
+
+        &:focus {
+          background: var(--green-secondary);
+        }
 
         .switch__knob {
           background: var-dark('color-primary');
