@@ -5,6 +5,7 @@ import Cookies from 'universal-cookie';
 import WordleService from '../services/WordleService';
 import Board from './Board';
 import Keyboard from './Keyboard';
+import { Delay } from '../util/Delay';
 
 interface Props {
   gameType: GameType;
@@ -14,6 +15,7 @@ interface State {
   confirmedLetters: Letter[];
   knownLetters: { [key: string]: LetterType };
   loading: boolean;
+  solved: boolean;
 }
 
 export default class Game extends React.Component<Props, State> {
@@ -31,13 +33,17 @@ export default class Game extends React.Component<Props, State> {
       this.cookies.set(guessesKey, []);
     }
     const confirmedLetters = (guesses ?? []) as Letter[];
+    const solved =
+      confirmedLetters.length >= 5 &&
+      confirmedLetters.slice(-5).every(letter => letter.type === LetterType.CORRECT);
 
     this.state = {
       confirmedLetters,
       knownLetters: this.compileKnownLetters(confirmedLetters),
-      loading: true
+      loading: true,
+      solved
     };
-    this.guessHandler = this.guessHandler.bind(this);
+    this.validGuessHandler = this.validGuessHandler.bind(this);
   }
 
   // compile known letter types for Keyboard based on confirmedLetters
@@ -53,22 +59,34 @@ export default class Game extends React.Component<Props, State> {
   }
 
   // handler for updated guess letters emitted from Board
-  guessHandler(confirmedLetters: Letter[], solved: boolean, filled: boolean) {
-    if (solved || filled) {
-      this.setState(() => ({
-        confirmedLetters: [],
-        knownLetters: {}
-      }));
+  async validGuessHandler(guess: string) {
+    // evaluate guess against server
+    const newLetters = await WordleService.evaluateGuess(guess, this.props.gameType);
+    const confirmedLetters = this.state.confirmedLetters.concat(newLetters);
+
+    // update state
+    this.setState(() => ({
+      confirmedLetters,
+      knownLetters: this.compileKnownLetters(confirmedLetters),
+      solved: false
+    }));
+
+    // check if puzzle has been solved or failed
+    const solved = newLetters.every(letter => letter.type === LetterType.CORRECT);
+    const failed = confirmedLetters.length === 30;
+
+    if (solved || failed) {
+      await Delay(2000);
+      this.setState(() => ({ solved: true }));
       this.cookies.set(`${this.props.gameType}#solved`, true);
 
       if (this.props.gameType === GameType.WORD_RUSH) {
-        WordleService.getWord(this.props.gameType).then();
+        await WordleService.getWord(this.props.gameType);
+        this.setState(() => ({ confirmedLetters: [], knownLetters: {}, solved: false }));
       }
-    } else {
-      this.setState(() => ({
-        knownLetters: this.compileKnownLetters(confirmedLetters)
-      }));
     }
+
+    this.cookies.set(`${this.props.gameType}#guesses`, this.state.confirmedLetters);
   }
 
   render() {
@@ -81,7 +99,8 @@ export default class Game extends React.Component<Props, State> {
         <Board
           confirmedLetters={this.state.confirmedLetters}
           gameType={this.props.gameType}
-          guessHandler={this.guessHandler}
+          validGuessHandler={this.validGuessHandler}
+          solved={this.state.solved}
         />
         <Keyboard knownLetters={this.state.knownLetters} />
       </div>
