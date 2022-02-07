@@ -3,6 +3,7 @@ import React from 'react';
 import { LetterType } from '../types';
 import { Qwerty } from '../globals';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { ReactComponent as BackspaceIcon } from 'assets/icons/Backspace-Icon.svg';
 
 interface Props {
   knownLetters: { [key: string]: LetterType };
@@ -30,12 +31,7 @@ export default class Keyboard extends React.Component<Props, State> {
   }
 
   pressKey(key: string) {
-    document.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key,
-        ctrlKey: false
-      })
-    );
+    document.dispatchEvent(new KeyboardEvent('keydown', { key, ctrlKey: false }));
   }
 
   render() {
@@ -43,7 +39,15 @@ export default class Keyboard extends React.Component<Props, State> {
       <div className='keyboard'>
         <div className='keyboard__row'>{this.renderKeys(0, 10)}</div>
         <div className='keyboard__row'>{this.renderKeys(10, 19)}</div>
-        <div className='keyboard__row'>{this.renderKeys(19, 26)}</div>
+        <div className='keyboard__row'>
+          <button className='row__key large' onClick={() => this.pressKey('Backspace')}>
+            <BackspaceIcon />
+          </button>
+          {this.renderKeys(19, 26)}
+          <button className='row__key large' onClick={() => this.pressKey('Enter')}>
+            ENTER
+          </button>
+        </div>
       </div>
     );
   }

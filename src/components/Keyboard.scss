@@ -12,15 +12,19 @@
   @include mix-pop-enter-done;
 }
 
+$key-gap: 5px;
+
 .keyboard {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: $key-gap;
 
   .keyboard__row {
     display: flex;
-    gap: 5px;
+    gap: $key-gap;
+
+    $key-width: 40px;
 
     .row__key {
       @include mix-button;
@@ -32,12 +36,21 @@
       font-size: $font-size-sm;
       font-family: $font-family-primary;
       text-transform: capitalize;
-      height: 40px;
+      height: $key-width;
       width: 32px;
       color: var-dark('color-primary');
       background: var-dark('color-tertiary');
       border-radius: $border-radius * 0.5;
       transition: transform $transition-duration * 2 $transition-timing;
+
+      &.large {
+        width: ($key-width - $key-gap) * 1.5;
+        font-size: $font-size-sm - 0.075rem;
+
+        svg {
+          height: $key-width * 0.5;
+        }
+      }
 
       &.wrong {
         background: var-dark('background-tertiary');
