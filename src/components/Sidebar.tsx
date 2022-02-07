@@ -27,7 +27,8 @@ export default function Sidebar() {
 
   return (
     <div className='sidebar'>
-      <div className='sidebar__links'>
+      <div className='sidebar__top'>
+        <div className='sidebar__title'>WORDLE</div>
         {links.map(link => (
           <NavLink
             key={link.route}

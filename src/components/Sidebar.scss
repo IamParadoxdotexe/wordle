@@ -9,13 +9,22 @@
   justify-content: space-between;
   background: var(--background-secondary);
   width: $sidebar-width;
-  padding: $gap-xl $gap-lg;
+  padding: $gap-lg * 1.5 $gap-lg;
   height: 100%;
 
-  .sidebar__links {
+  .sidebar__top {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: $gap-sm;
+
+    .sidebar__title {
+      font-family: $font-family-secondary;
+      font-size: $font-size-xxl;
+      font-weight: 500;
+      letter-spacing: 0.1rem;
+      margin-bottom: $gap-lg;
+    }
 
     a:link {
       text-decoration: none;
@@ -23,6 +32,8 @@
     }
 
     a {
+      width: 100%;
+
       button {
         @include mix-button-basic;
         height: 40px;
