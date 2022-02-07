@@ -23,11 +23,14 @@
     gap: 5px;
 
     .row__key {
+      @include mix-button;
+      @include mix-focus-background(var-dark('color-quantenary'));
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
       font-size: $font-size-sm;
+      font-family: $font-family-primary;
       text-transform: capitalize;
       height: 40px;
       width: 32px;
@@ -38,14 +41,29 @@
 
       &.wrong {
         background: var-dark('background-tertiary');
+
+        &:focus,
+        &:hover {
+          background: var-dark('background-quantenary');
+        }
       }
 
       &.partial {
         background: var(--cyan-primary);
+
+        &:focus,
+        &:hover {
+          background: var(--cyan-secondary);
+        }
       }
 
       &.correct {
         background: var(--green-primary);
+
+        &:focus,
+        &:hover {
+          background: var(--green-secondary);
+        }
       }
     }
   }

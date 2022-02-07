@@ -29,6 +29,15 @@ export default class Keyboard extends React.Component<Props, State> {
     }
   }
 
+  pressKey(key: string) {
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key,
+        ctrlKey: false
+      })
+    );
+  }
+
   render() {
     return (
       <div className='keyboard'>
@@ -46,9 +55,13 @@ export default class Keyboard extends React.Component<Props, State> {
           const type = this.state.knownLetters[letter];
           return (
             <CSSTransition key={`${letter}-${type}`} timeout={300} classNames='key' exit={false}>
-              <div className={`row__key ${type}`} key={letter}>
+              <button
+                className={`row__key ${type}`}
+                key={letter}
+                onClick={() => this.pressKey(letter)}
+              >
                 {letter}
-              </div>
+              </button>
             </CSSTransition>
           );
         })}
