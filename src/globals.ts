@@ -1,4 +1,19 @@
 import wordListFile from './wordList.txt';
+import { ReactComponent as TwentyFourHourIcon } from './assets/icons/24Hour-Icon.svg';
+import { ReactComponent as RocketIcon } from './assets/icons/Rocket-Icon.svg';
+
+export const GameRoutes = [
+  {
+    route: '/word-of-the-day',
+    icon: TwentyFourHourIcon,
+    label: 'Word of the Day'
+  },
+  {
+    route: '/word-rush',
+    icon: RocketIcon,
+    label: 'Word Rush'
+  }
+];
 
 const alphabetArray = [
   'a',

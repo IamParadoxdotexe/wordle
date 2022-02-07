@@ -3,7 +3,7 @@
 .sidebar {
   position: fixed;
   top: 0;
-  left: 0;
+  left: -$sidebar-width;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -11,6 +11,7 @@
   width: $sidebar-width;
   padding: $gap-lg * 1.5 $gap-lg;
   height: 100%;
+  transition: left $transition-timing $transition-duration;
 
   .sidebar__top {
     display: flex;
@@ -111,5 +112,9 @@
         }
       }
     }
+  }
+
+  @media (min-width: $breakpoint-md) {
+    left: 0;
   }
 }
