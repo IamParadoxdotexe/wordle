@@ -8,17 +8,19 @@
     height: 100%;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 
     --outlet-padding: #{$gap-xl};
     --outlet-width: 1000px;
 
     .outlet {
       max-width: calc(var(--outlet-width) + #{$sidebar-width} + var(--outlet-padding) * 2);
-      padding: ($gap-xl * 2) var(--outlet-padding) ($gap-xl * 2);
+      padding: $gap-xl var(--outlet-padding) $gap-xl;
       transition: padding $transition-timing $transition-duration;
 
       @media (min-width: $breakpoint-md) {
-        padding-left: calc(#{$sidebar-width} + var(--outlet-padding));
+        padding: ($gap-xl * 2) var(--outlet-padding) ($gap-xl * 2)
+          calc(#{$sidebar-width} + var(--outlet-padding));
       }
     }
 

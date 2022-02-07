@@ -1,0 +1,44 @@
+@import '../styles/global';
+
+$switch-height: 24px;
+$switch-width: $switch-height * 2;
+$knob-gap: $gap-xs;
+$knob-size: $switch-height - $knob-gap * 2;
+
+.toggle-switch {
+  position: relative;
+  height: $switch-height;
+  width: $switch-width;
+  background: var-dark('background-tertiary');
+  border-radius: $switch-height;
+  transition: background $transition-duration $transition-timing;
+  cursor: pointer;
+
+  &:focus {
+    background: var-dark('color-tertiary');
+  }
+
+  .toggle-switch__knob {
+    position: absolute;
+    top: $knob-gap;
+    left: $knob-gap;
+    background: var-dark('color-primary');
+    border-radius: $switch-height;
+    height: $knob-size;
+    width: $knob-size;
+    transition: left $transition-duration $transition-timing;
+  }
+
+  &.on {
+    background: var(--green-primary);
+
+    &:focus {
+      background: var(--green-secondary);
+    }
+
+    .toggle-switch__knob {
+      background: var-dark('color-primary');
+      left: $switch-width - $knob-size - $knob-gap;
+    }
+  }
+}

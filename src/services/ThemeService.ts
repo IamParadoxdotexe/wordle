@@ -22,12 +22,6 @@ export default new (class ThemeService {
     this.cookies.set('color-theme', newTheme, { maxAge: 315600000 });
   }
 
-  public toggleTheme(): string {
-    const newTheme = this.theme === Theme.DARK ? Theme.LIGHT : Theme.DARK;
-    this.setTheme(newTheme);
-    return newTheme;
-  }
-
   private static replaceBodyTheme(theme: Theme) {
     document.body.className = document.body.className.replace(/light|dark/, theme);
   }

@@ -11,6 +11,8 @@
   width: $sidebar-width;
   padding: $gap-lg * 1.5 $gap-lg;
   height: 100%;
+  z-index: 100;
+  pointer-events: none;
   transition: left $transition-timing $transition-duration;
 
   .sidebar__top {
@@ -69,52 +71,10 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 $gap-md;
-    cursor: pointer;
-
-    $switch-height: 24px;
-    $switch-width: $switch-height * 2;
-    $knob-gap: $gap-xs;
-    $knob-size: $switch-height - $knob-gap * 2;
-
-    .toggle__switch {
-      position: relative;
-      height: $switch-height;
-      width: $switch-width;
-      background: var-dark('background-tertiary');
-      border-radius: $switch-height;
-      transition: background $transition-duration $transition-timing;
-
-      &:focus {
-        background: var-dark('color-tertiary');
-      }
-
-      .switch__knob {
-        position: absolute;
-        top: $knob-gap;
-        left: $knob-gap;
-        background: var-dark('color-primary');
-        border-radius: $switch-height;
-        height: $knob-size;
-        width: $knob-size;
-        transition: left $transition-duration $transition-timing;
-      }
-
-      &.on {
-        background: var(--green-primary);
-
-        &:focus {
-          background: var(--green-secondary);
-        }
-
-        .switch__knob {
-          background: var-dark('color-primary');
-          left: $switch-width - $knob-size - $knob-gap;
-        }
-      }
-    }
   }
 
   @media (min-width: $breakpoint-md) {
     left: 0;
+    pointer-events: all;
   }
 }

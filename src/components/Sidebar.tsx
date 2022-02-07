@@ -1,41 +1,51 @@
 import './Sidebar.scss';
-import { createElement } from 'react';
+import React, { createElement } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
 import ThemeService from 'services/ThemeService';
 import { GameRoutes } from '../globals';
+import ToggleSwitch from './ToggleSwitch';
+import { Theme } from '../types';
 
-export default function Sidebar() {
-  const [theme, setTheme] = useState(ThemeService.getTheme());
-  const toggleTheme = () => {
-    setTheme(ThemeService.toggleTheme());
+interface State {
+  theme: string;
+}
+
+export default class Sidebar extends React.Component<{}, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      theme: ThemeService.getTheme()
+    };
+    this.toggleTheme = this.toggleTheme.bind(this);
+  }
+
+  toggleTheme = (toggled: boolean) => {
+    ThemeService.setTheme(toggled ? Theme.DARK : Theme.LIGHT);
   };
 
-  return (
-    <div className='sidebar'>
-      <div className='sidebar__top'>
-        <div className='sidebar__title'>WORDLE</div>
-        {GameRoutes.map(link => (
-          <NavLink
-            key={link.route}
-            className={({ isActive }) => (isActive ? 'active' : 'inactive')}
-            to={link.route}
-          >
-            <button type='button' tabIndex={-1}>
-              {createElement(link.icon)} {link.label}
-            </button>
-          </NavLink>
-        ))}
+  render() {
+    return (
+      <div className='sidebar'>
+        <div className='sidebar__top'>
+          <div className='sidebar__title'>WORDLE</div>
+          {GameRoutes.map(link => (
+            <NavLink
+              key={link.route}
+              className={({ isActive }) => (isActive ? 'active' : 'inactive')}
+              to={link.route}
+            >
+              <button type='button' tabIndex={-1}>
+                {createElement(link.icon)} {link.label}
+              </button>
+            </NavLink>
+          ))}
+        </div>
+        <div className='sidebar__toggle'>
+          Dark Mode
+          <ToggleSwitch startToggled={this.state.theme === 'dark'} onToggle={this.toggleTheme} />
+        </div>
       </div>
-      <div className='sidebar__toggle'>
-        Dark Mode
-        <button
-          className={`toggle__switch ${theme === 'dark' ? 'on' : 'off'}`}
-          onClick={toggleTheme}
-        >
-          <div className='switch__knob' />
-        </button>
-      </div>
-    </div>
-  );
+    );
+  }
 }
