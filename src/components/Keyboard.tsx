@@ -40,14 +40,15 @@ export default class Keyboard extends React.Component<Props, State> {
         <div className='keyboard__row'>{this.renderKeys(0, 10)}</div>
         <div className='keyboard__row'>{this.renderKeys(10, 19)}</div>
         <div className='keyboard__row'>
-          <button className='row__key large' onClick={() => this.pressKey('Backspace')}>
+          <button className='keyboard__key wide hidden' tabIndex={-1} />
+          {this.renderKeys(19, 26)}
+          <button className='keyboard__key wide' onClick={() => this.pressKey('Backspace')}>
             <BackspaceIcon />
           </button>
-          {this.renderKeys(19, 26)}
-          <button className='row__key large' onClick={() => this.pressKey('Enter')}>
-            ENTER
-          </button>
         </div>
+        <button className='keyboard__key submit' onClick={() => this.pressKey('Enter')}>
+          SUBMIT
+        </button>
       </div>
     );
   }
@@ -60,7 +61,7 @@ export default class Keyboard extends React.Component<Props, State> {
           return (
             <CSSTransition key={`${letter}-${type}`} timeout={300} classNames='key' exit={false}>
               <button
-                className={`row__key ${type}`}
+                className={`keyboard__key ${type}`}
                 key={letter}
                 onClick={() => this.pressKey(letter)}
               >

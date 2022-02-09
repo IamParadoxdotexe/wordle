@@ -13,6 +13,7 @@
 }
 
 $key-gap: 5px;
+$key-width: 32px;
 
 .keyboard {
   display: flex;
@@ -23,61 +24,68 @@ $key-gap: 5px;
   .keyboard__row {
     display: flex;
     gap: $key-gap;
+  }
 
-    $key-width: 40px;
+  .keyboard__key {
+    @include mix-button;
+    @include mix-focus-background(var-dark('color-quantenary'));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: $font-size-sm;
+    font-family: $font-family-primary;
+    text-transform: capitalize;
+    height: 40px;
+    width: $key-width;
+    color: var-dark('color-primary');
+    background: var-dark('color-tertiary');
+    border-radius: $border-radius * 0.5;
+    transition: transform $transition-duration * 2 $transition-timing;
 
-    .row__key {
-      @include mix-button;
-      @include mix-focus-background(var-dark('color-quantenary'));
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      font-size: $font-size-sm;
-      font-family: $font-family-primary;
-      text-transform: capitalize;
-      height: $key-width;
-      width: 32px;
-      color: var-dark('color-primary');
-      background: var-dark('color-tertiary');
-      border-radius: $border-radius * 0.5;
-      transition: transform $transition-duration * 2 $transition-timing;
+    &.wide {
+      width: $key-width * 1.5 + $key-gap * 0.5;
+      font-size: $font-size-sm - 0.075rem;
 
-      &.large {
-        width: ($key-width - $key-gap) * 1.5;
-        font-size: $font-size-sm - 0.075rem;
-
-        svg {
-          height: $key-width * 0.5;
-        }
+      &.hidden {
+        visibility: hidden;
       }
 
-      &.wrong {
-        background: var-dark('background-tertiary');
-
-        &:focus,
-        &:hover {
-          background: var-dark('background-quantenary');
-        }
+      svg {
+        height: $key-width * 0.5;
       }
+    }
 
-      &.partial {
-        background: var(--cyan-primary);
+    &.wrong {
+      background: var-dark('background-tertiary');
 
-        &:focus,
-        &:hover {
-          background: var(--cyan-secondary);
-        }
+      &:focus,
+      &:hover {
+        background: var-dark('background-quantenary');
       }
+    }
 
-      &.correct {
-        background: var(--green-primary);
+    &.partial {
+      background: var(--cyan-primary);
 
-        &:focus,
-        &:hover {
-          background: var(--green-secondary);
-        }
+      &:focus,
+      &:hover {
+        background: var(--cyan-secondary);
       }
+    }
+
+    &.correct,
+    &.submit {
+      background: var(--green-primary);
+
+      &:focus,
+      &:hover {
+        background: var(--green-secondary);
+      }
+    }
+
+    &.submit {
+      width: $key-width * 5 + $key-gap * 4;
     }
   }
 }
